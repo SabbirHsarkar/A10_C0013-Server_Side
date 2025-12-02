@@ -1,10 +1,10 @@
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express= require('express');
 const cors= require('cors');
 require('dotenv').config();
 
-const port =5000;
+const port =3000;
 const app=express();
 app.use(cors());
 app.use(express.json());
@@ -12,6 +12,7 @@ app.use(express.json());
 
 
 const uri = process.env.DB_URI;
+
 
 
 const client = new MongoClient(uri, {
@@ -41,7 +42,30 @@ async function run() {
       
     })
   //Get services from DB
+  app.get('/properties',async(req,res)=>{
+    const result= await homeNest.find().toArray();
+    res.send(result);
+  })
 
+  app.get('/properties/:id',async(req,res)=>{
+   
+    const id=req.params
+    console.log(id);
+
+    const query ={_id: new ObjectId(id)}
+    const result=await homeNest.findOne(query)
+    res.send(result)
+    
+  })
+
+  app.get('/my-properties',async(req,res)=>{
+
+    const {email}= req.query
+   const query={email:email}
+   const result=await homeNest.find(query).toArray()
+   res.send(result);
+    
+  })
 
 
    
