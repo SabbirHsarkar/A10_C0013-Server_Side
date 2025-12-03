@@ -67,6 +67,20 @@ async function run() {
     
   })
 
+  app.put('/update/:id',async(req,res)=>{
+    const data=req.body
+    const id=req.params
+     const query ={_id: new ObjectId(id)}
+    
+     const updateProperties={
+       $set:data
+    }
+    const result=await homeNest.updateOne(query,updateProperties)
+    res.send(result);
+    
+   
+  })
+
 
    
     await client.db("admin").command({ ping: 1 });
