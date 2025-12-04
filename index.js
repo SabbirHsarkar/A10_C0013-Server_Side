@@ -30,6 +30,8 @@ async function run() {
 
     const database=client.db('homeNest');
     const homeNest=database.collection('properties');
+    const ratingsCollection = database.collection("ratings");
+
 
     //Post service to DB
 
@@ -87,6 +89,26 @@ async function run() {
     const result= await homeNest.deleteOne(query)
     res.send(result);
   })
+
+  app.post("/ratings", async (req, res) => {
+  const data = req.body;
+  const result = await ratingsCollection.insertOne(data);
+  res.send(result);
+});
+
+app.get("/property-ratings/:propertyId", async (req, res) => {
+  const propertyId = req.params.propertyId;
+  const result = await ratingsCollection.find({ propertyId }).toArray();
+  res.send(result);
+});
+
+app.get("/my-ratings", async (req, res) => {
+  const email = req.query.email;
+  const result = await ratingsCollection.find({ reviewerEmail: email }).toArray();
+  res.send(result);
+});
+
+
 
 
    
