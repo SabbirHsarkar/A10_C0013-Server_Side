@@ -45,17 +45,17 @@ async function run() {
     })
   //Get services from DB
   app.get('/properties',async(req,res)=>{
-    const {category}=req.query
-    console.log(category);
-    
-    const query={}
-    if(category){
-      query.category=category
-      
-    }
-    const result= await homeNest.find(query).toArray();
-    res.send(result);
+    const { category, search } = req.query;
+  const query = {};
+
+  if (category) query.category = category;
+  if (search) query.name = { $regex: search, $options: "i" };
+
+  const result = await homeNest.find(query).toArray();
+  res.send(result);
   })
+
+
 
   app.get('/properties/:id',async(req,res)=>{
    
