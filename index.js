@@ -45,7 +45,15 @@ async function run() {
     })
   //Get services from DB
   app.get('/properties',async(req,res)=>{
-    const result= await homeNest.find().toArray();
+    const {category}=req.query
+    console.log(category);
+    
+    const query={}
+    if(category){
+      query.category=category
+      
+    }
+    const result= await homeNest.find(query).toArray();
     res.send(result);
   })
 
@@ -107,6 +115,7 @@ app.get("/my-ratings", async (req, res) => {
   const result = await ratingsCollection.find({ reviewerEmail: email }).toArray();
   res.send(result);
 });
+
 
 
 
