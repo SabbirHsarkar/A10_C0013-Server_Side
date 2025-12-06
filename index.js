@@ -26,7 +26,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     
-    await client.connect();
+    // await client.connect();
 
     const database=client.db('homeNest');
     const homeNest=database.collection('properties');
@@ -104,6 +104,11 @@ async function run() {
   res.send(result);
 });
 
+app.get("/ratings", async (req, res) => {
+  const result = await ratingsCollection.find().toArray();
+  res.send(result);
+});
+
 app.get("/property-ratings/:propertyId", async (req, res) => {
   const propertyId = req.params.propertyId;
   const result = await ratingsCollection.find({ propertyId }).toArray();
@@ -121,7 +126,7 @@ app.get("/my-ratings", async (req, res) => {
 
 
    
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
     
     
